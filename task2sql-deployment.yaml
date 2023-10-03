@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: task2sql-deployment
+  labels:
+    apps: task2sql-deployment
+spec:
+  replicas: 1
+  selector: 
+    matchLabels:  
+      app: mytriotasksql
+  strategy: 
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  template:
+    metadata: 
+      labels:
+        app: mytriotasksql
+    spec:
+      containers:
+      - name: mytriotasksql
+        image: chrisreeves1/mytriotasksql
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: password 
+        - name: MYSQL_DATABASE
+          value: flask-db
+        ports:
+        - containerPort: 3306
+
+---
+apiVersion: v1 
+kind: Service
+metadata:
+  name: mytriotasksql
+spec: 
+  type: ClusterIP
+  selector:
+    app: mytriotasksql
+  ports:
+  - protocol: TCP
+    port: 3306
+    targetPort: 3306
