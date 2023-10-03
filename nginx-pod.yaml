@@ -1,0 +1,16 @@
+apiVersion: v1 # specifies the api version - different for deployments + check docs.
+kind: Pod #can be a pod, deployment, secrets, has to have a first capital letter
+metadata: 
+  name: nginx # pod name
+  labels: # helps attach services through podlabels, can also delete by label
+    app: nginx
+spec: #for containers running inside pod
+  containers:
+  - name: nginx # container name
+    image: nginx:latest # image pulled down from registry
+    ports:
+    - containerPort: 80  #what the app uses
+
+
+  
+
