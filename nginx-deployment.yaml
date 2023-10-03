@@ -1,0 +1,27 @@
+apiVersion: apps/v1 #version of the k8s api to use, apps is a group of resources for deployments
+kind: Deployment # this is a deployment resource
+metadata:
+  name: nginx-deployment # name of the deployment
+  labels: 
+    apps: nginx-deployment # labels for the deployment
+spec:
+  replicas: 4 # desired number ofpods
+  selector:
+    matchLabels: # specify which pods are controlled by this deployment. looks for tag "nginx" in pods
+      app: nginx
+  strategy: # this specifies the deployment strategy to use and is applied when a new version is used.
+    rollingUpdate: #This is a default behaviour. Other is recreate(tears down and rebuilds poss) - rolling update incrementally changes our pods to run the new image
+      maxSurge: 25%
+      maxUnavailable: 25%
+  template: 
+    metadata:
+      labels:
+        app: nginx # this is the label assigned to the pods
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:alpine #image for contianers/pods
+
+
+
+
